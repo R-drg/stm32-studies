@@ -48,7 +48,7 @@ void systick_handler(void) __attribute__((weak, alias("default_handler")));
 
 extern uint32_t _sdata;   /* Inicio da secao .data */
 extern uint32_t _edata;   /* Fim da secao .data */
-extern uint32_t _la_data; /* Origem da secao .data na FLASH */
+extern uint32_t _data; /* Origem da secao .data na FLASH */
 
 extern uint32_t _sbss; /* Inicio da secao .bss */
 extern uint32_t _ebss; /* Fim da secao .bss */
@@ -91,7 +91,7 @@ void reset_handler(void)
 
     uint32_t size = (uint32_t)&_edata - (uint32_t)&_sdata;
     uint8_t *pDst = (uint8_t *)&_sdata;   /* SRAM */
-    uint8_t *pSrc = (uint8_t *)&_la_data; /* FLASH */
+    uint8_t *pSrc = (uint8_t *)&_data;    /* FLASH */
 
     for (i = 0; i < size; i++)
     {
