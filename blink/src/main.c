@@ -41,21 +41,16 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+
 /****************************************************************************
  * Public Functions
  ****************************************************************************/
 
+void wait(int time);
+
 /****************************************************************************
  * Name: main
  ****************************************************************************/
-
-void wait(int time)
-{
-	for (int i = 0; i < time; i++)
-	{
-	}
-	return;
-}
 
 int main(int argc, char *argv[])
 {
@@ -91,4 +86,12 @@ int main(int argc, char *argv[])
 	/* Nao deveria chegar aqui */
 
 	return EXIT_SUCCESS;
+}
+
+void wait(int time)
+{
+	for (int i = 0; i < time; i++)
+	{
+	}
+	return;
 }
