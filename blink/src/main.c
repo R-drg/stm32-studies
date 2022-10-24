@@ -49,6 +49,14 @@
  * Name: main
  ****************************************************************************/
 
+void wait(int time)
+{
+	for (int i = 0; i < time; i++)
+	{
+	}
+	return;
+}
+
 int main(int argc, char *argv[])
 {
 
@@ -74,8 +82,10 @@ int main(int argc, char *argv[])
 	{
 		reg = (reg | setPinHigh(13));
 		*pGPIOC_SETRESET = reg;
-		reg = (reg & setPinLow(13));
+		wait(5000);
+		reg = (reg | setPinLow(13));
 		*pGPIOC_SETRESET = reg;
+		wait(5000);
 	}
 
 	/* Nao deveria chegar aqui */
