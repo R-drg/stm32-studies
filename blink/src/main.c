@@ -28,9 +28,9 @@
 
 #define GPIO_RESET_OFFSET 16
 
-#define setPinHigh(pin) (1 << pin)
+#define setPinLow(pin) (1 << pin)
 
-#define setPinLow(pin) (1 << (pin + GPIO_RESET_OFFSET))
+#define setPinHigh(pin) (1 << (pin + GPIO_RESET_OFFSET))
 
 #define getMode(pin, mode) (mode << (pin * 2))
 
@@ -57,31 +57,34 @@ int main(int argc, char *argv[])
 
 	uint32_t reg;
 
-	uint32_t *pRCC_AHB1ENR = (uint32_t *)RCC_BASE + RCC_AHB1_OFFSET;
+	uint32_t *pRCC_AHB1ENR = (uint32_t *)(RCC_BASE + RCC_AHB1_OFFSET);
 
 	reg = *pRCC_AHB1ENR;
 
 	reg = (reg | (1 << 2));
 
-	uint32_t *pGPIOC_MODER = (uint32_t *)GPIOC_BASE + GPIO_MODER_OFFSET;
+  *pRCC_AHB1ENR = reg;
+
+	uint32_t *pGPIOC_MODER = (uint32_t *)(GPIOC_BASE + GPIO_MODER_OFFSET);
 
 	reg = *pGPIOC_MODER;
 
 	reg = (reg | getMode(13, OUTPUT));
 
-	uint32_t *pGPIOC_SETRESET = (uint32_t *)GPIOC_BASE + GPIO_SETRESET_OFFSET;
+  *pGPIOC_MODER = reg;
+
+	uint32_t *pGPIOC_SETRESET = (uint32_t *)(GPIOC_BASE + GPIO_SETRESET_OFFSET);
 
 	reg = *pGPIOC_SETRESET;
 
-	while (1)
-	{
-		reg = (reg | setPinHigh(13));
-		*pGPIOC_SETRESET = reg;
-		wait(5000);
-		reg = (reg | setPinLow(13));
-		*pGPIOC_SETRESET = reg;
-		wait(5000);
-	}
+  int LedDelay = 1000000;
+  while (1)
+  {
+    *pGPIOC_SETRESET = setPinHigh(13);
+    wait(LedDelay);
+    *pGPIOC_SETRESET = setPinLow(13);
+    wait(LedDelay);
+  }
 
 	/* Nao deveria chegar aqui */
 
