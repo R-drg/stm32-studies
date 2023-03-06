@@ -41,7 +41,6 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-
 /****************************************************************************
  * Public Functions
  ****************************************************************************/
@@ -63,7 +62,7 @@ int main(int argc, char *argv[])
 
 	reg = (reg | (1 << 2));
 
-  *pRCC_AHB1ENR = reg;
+	*pRCC_AHB1ENR = reg;
 
 	uint32_t *pGPIOC_MODER = (uint32_t *)(GPIOC_BASE + GPIO_MODER_OFFSET);
 
@@ -71,20 +70,20 @@ int main(int argc, char *argv[])
 
 	reg = (reg | getMode(13, OUTPUT));
 
-  *pGPIOC_MODER = reg;
+	*pGPIOC_MODER = reg;
 
 	uint32_t *pGPIOC_SETRESET = (uint32_t *)(GPIOC_BASE + GPIO_SETRESET_OFFSET);
 
 	reg = *pGPIOC_SETRESET;
 
-  int LedDelay = 1000000;
-  while (1)
-  {
-    *pGPIOC_SETRESET = setPinHigh(13);
-    wait(LedDelay);
-    *pGPIOC_SETRESET = setPinLow(13);
-    wait(LedDelay);
-  }
+	int LedDelay = 1000000;
+	while (1)
+	{
+		reg &= setPinHigh(13);
+		wait(LedDelay);
+		reg &= setPinLow(13);
+		wait(LedDelay);
+	}
 
 	/* Nao deveria chegar aqui */
 
