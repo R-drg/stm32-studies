@@ -91,7 +91,7 @@ void reset_handler(void)
 
     uint32_t size = (uint32_t)&_edata - (uint32_t)&_sdata;
     uint8_t *pDst = (uint8_t *)&_sdata;   /* SRAM */
-    uint8_t *pSrc = (uint8_t *)&_la_data;    /* FLASH */
+    uint8_t *pSrc = (uint8_t *)&_la_data; /* FLASH */
 
     for (i = 0; i < size; i++)
     {

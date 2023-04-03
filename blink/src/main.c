@@ -26,13 +26,31 @@
 
 #define GPIO_SETRESET_OFFSET 0x18
 
-#define GPIO_RESET_OFFSET 16
+#define GPIO_SET_OFFSET 16
 
 #define setPinLow(pin) (1 << pin)
 
-#define setPinHigh(pin) (1 << (pin + GPIO_RESET_OFFSET))
+#define setPinHigh(pin) (1 << (pin + GPIO_SET_OFFSET))
 
 #define getMode(pin, mode) (mode << (pin * 2))
+
+#define PUSH_PULL 0
+#define OPEN_DRAIN 1
+
+#define GPIO_OTYPER_OFFSET 0x0004
+
+#define LOW_SPEED 0
+#define MEDIUM_SPEED 1
+#define FAST_SPEED 2
+#define HIGH_SPEED 3
+
+#define GPIO_OSPEEDR_OFFSET 0x0008
+
+#define NO_PULL 0
+#define PULL_UP 1
+#define PULL_DOWN 2
+
+#define GPIO_PUPDR_OFFSET 0x000C
 
 /****************************************************************************
  * Included Files
@@ -72,11 +90,28 @@ int main(int argc, char *argv[])
 
 	*pGPIOC_MODER = reg;
 
+	uint32_t *pGPIOC_OTYPER = (uint32_t *)(GPIOC_BASE + GPIO_OTYPER_OFFSET);
+
+	reg = *pGPIOC_OTYPER;
+
+	reg = (reg | (PUSH_PULL << 13));
+
+	*pGPIOC_OTYPER = reg;
+
+	uint32_t *pGPIOC_OSPEEDR = (uint32_t *)(GPIOC_BASE + GPIO_OSPEEDR_OFFSET);
+
+	reg = *pGPIOC_OSPEEDR;
+
+	reg = (reg | (LOW_SPEED << 26));
+
+	*pGPIOC_OSPEEDR = reg;
+
 	uint32_t *pGPIOC_SETRESET = (uint32_t *)(GPIOC_BASE + GPIO_SETRESET_OFFSET);
 
 	reg = *pGPIOC_SETRESET;
 
-	int LedDelay = 1000000;
+	int LedDelay = 10000000;
+
 	while (1)
 	{
 		reg &= setPinHigh(13);

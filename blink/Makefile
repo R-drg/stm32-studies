@@ -20,13 +20,14 @@ flash: bin
 bin: elf
 	arm-none-eabi-objcopy -O binary $(OUT_DIR)/blink.elf $(OUT_DIR)/blink.bin
 
-elf: $(OBJECT)
+elf: obj
 	arm-none-eabi-gcc -nostdlib -T stm32f411-rom.ld build/main.o build/startup.o -o build/blink.elf
 
 obj: $(OBJECT)
 
 $(OUT_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) -c $(CFLAGS) $^ -o $@
+
 clean:
 	$(RM) *.o $(OUT_DIR)
 	
